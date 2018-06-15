@@ -5,13 +5,6 @@
 #(4) calculate converted formula
 #(5) print answer
 
-index = 0
-def getIndex():
-    return index
-
-def setIndex(number):
-    return index+number
-
 
 #calculate RPN formula
 def evaluate(tokens):
@@ -52,7 +45,7 @@ def ReversePolishNotation(tokens):
             while len(stack)!=0 and checkPriority(token, stack[-1]):
                 fixedtokens.append(stack.pop())
             stack.append(token)
-                
+    #pop all operands from stack and push it into fixedtokens
     while len(stack)!=0:
         fixedtokens.append(stack.pop())
 
@@ -67,6 +60,7 @@ def checkPriority(operand1, operand2):
         return True
     else:
         return False
+
 
 #tokenize the formula
 def tokenize(line):
