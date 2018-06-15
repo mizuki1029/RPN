@@ -70,10 +70,10 @@ def tokenize(line):
     nums = ''
     numflag = 0
     while index < len(line):
-        if line[index].isdigit() or line[index] == '.':
+        if line[index].isdigit() or '.' in line[index]:
             numflag = 1
             numlist.append(line[index]) #for two or more digit number and decimals
-        elif line[index] == '+' or '-' or '*' or '/' or '(' or ')':
+        elif line[index] in '+-*/()': #operands and brackets
             if numflag ==1:
                 nums = ''.join(numlist)
                 numlist = [] #initialize
