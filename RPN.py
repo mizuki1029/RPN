@@ -67,9 +67,9 @@ def tokenize(line):
     tokens = []
     index = 0
     numlist = []
-    nums = ''
     numflag = 0
     while index < len(line):
+        nums = ''
         if line[index].isdigit() or '.' in line[index]:
             numflag = 1
             numlist.append(line[index]) #for two or more digit number and decimals
@@ -79,7 +79,6 @@ def tokenize(line):
                 numlist = [] #initialize
                 tokens.append(nums) #push number
                 numflag = 0 #initialize
-                num = '' #initialize
             tokens.append(line[index]) #push operand
         else:
             print 'Invalid character found: ' + line[index]
