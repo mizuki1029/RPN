@@ -5,7 +5,6 @@
 #(4) calculate converted formula
 #(5) print answer
 
-import os
 import csv
 
 FILE_NAME = "result.csv"
@@ -108,8 +107,7 @@ while True:
     line = input() #(1) formula was read
     line = line.replace(' ', '') #delete spaces
     line = line.replace('=', '') #delete equals sign
-    if line == "c" and os.path.exists(FILE_NAME):
-        os.remove(FILE_NAME)
+    if line == "c":
         with open(FILE_NAME, "w", encoding="utf-8", errors=FILE_NAME + "create error") as f:
             writer = csv.writer(f)
             row = ["formula", "answer"]
