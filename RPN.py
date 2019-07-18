@@ -5,7 +5,11 @@
 #(4) calculate converted formula
 #(5) print answer
 
+import os
+import csv
 
+FILE_NAME = "result.csv"
+ 
 #calculate RPN formula
 def evaluate(tokens):
     operator = {
@@ -81,7 +85,7 @@ def tokenize(line):
                 numflag = 0 #initialize
             tokens.append(line[index]) #push operand
         else:
-            print 'Invalid character found: ' + line[index]
+            print("Invalid character found: " + str(line[index]))
             exit(1)
         #if last token is a number
         if index ==len(line)-1 and line[index].isdigit():
@@ -90,50 +94,33 @@ def tokenize(line):
         index += 1
     return tokens
 
+with open(FILE_NAME, "w", encoding="utf-8", errors=FILE_NAME + "create error") as f:
+            writer = csv.writer(f)
+            row = ["formula", "answer"]
+            writer.writerow(row)
 
-def test(line, expectedAnswer):
-    actualAnswer = 0
-    tokens = tokenize(line)
-    tokens = ReversePolishNotation(tokens)
-    if abs(float(evaluate(tokens)) - expectedAnswer) < 1e-8:
-        print "PASS! (%s = %f)" % (line, expectedAnswer)
-    else:
-        print "FAIL! (%s should be %f but was %f)" % (line, expectedAnswer, evaluate(tokens))
-
-
-def runTest():
-    print "==== Test started! ===="
-    test("1", 1)
-    test("1+2", 3)
-    test("1.5+2", 3.5)
-    test("10.5+25", 35.5)
-    test("1.5+2.5", 4.0)
-    test("2-1", 1)
-    test("1-2", -1)
-    test("2.5-1", 1.5)
-    test("1.5-2.0", -0.5)
-    test("1*2", 2)
-    test("1.5*2", 3.0)
-    test("2*1.5", 3.0)
-    test("0.5*2.5", 1.25)
-    test("2/1", 2)
-    test("1/2", 0.5)
-    test("2.5/1.25", 2)
-    test("1.25/2.5", 0.5)
-    test("(1.5+2)*2.4", 8.4)
-    test("2.4*(1.5+2)", 8.4)
-    test("(1.5+2.5)/(0.5*4)", 2.0)
-    test("((1.5+2.5)/(0.5*4))*(33-22)", 22.0)
-    print "==== Test finished! ====\n"
-
-runTest()
+print("Please input formula and press the Enter key.")
+print("You can confirm your inputs and the answers.")
+print("If you input 'c', the results are deleted.")
 
 while True:
-    print '> ',
-    line = raw_input() #(1) formula was read
+    print("> ", end="")
+    line = input() #(1) formula was read
     line = line.replace(' ', '') #delete spaces
-    tokens = tokenize(line)  #(2) tokenize it
-    tokens = ReversePolishNotation(tokens) #(3) convert its notation into Reverse Polish Notation
-    answer = evaluate(tokens) #(4) calculate converted formula
-    print "answer = %f\n" % answer #(5) print answer
+    line = line.replace('=', '') #delete equals sign
+    if line == "c" and os.path.exists(FILE_NAME):
+        os.remove(FILE_NAME)
+        with open(FILE_NAME, "w", encoding="utf-8", errors=FILE_NAME + "create error") as f:
+            writer = csv.writer(f)
+            row = ["formula", "answer"]
+            writer.writerow(row)
+    else:
+        tokens = tokenize(line)  #(2) tokenize it
+        tokens = ReversePolishNotation(tokens) #(3) convert its notation into Reverse Polish Notation
+        answer = evaluate(tokens) #(4) calculate converted formula
+        print(answer) #(5) print answer
+        with open(FILE_NAME, "a", encoding="utf-8", errors=FILE_NAME + "create error") as f:
+            writer = csv.writer(f)
+            row = [line, answer]
+            writer.writerow(row)
     
